@@ -1,13 +1,13 @@
 # Python Packages
 
 
-## cms_argument_handler
+## cp_arg_handler
 Provides a helper module for parsing command line options and arguments.
 
-## cms_ini_handler
+## cp_ini_handler
 Provides a helper module for ini files.  It wraps the reading and retrieving of values from ini files into a single class.
 
-## cms_logging
+## cp_logging
 Provides a helper module for logging.  There is a single unified class that sets up logging.  The class can be multiple times.  Each instance can set up one of the following types of logs:
 
 CONSOLE:
@@ -19,7 +19,7 @@ FILE:
 SYSLOG:
 : logs output to syslog
 
-## cms_os_utils
+## cp_os_utils
 Provides python implementations of many shell commands.
 
 ## python_fstab
@@ -52,11 +52,11 @@ cd <path/to>/cms-python-modules
 Source RPMs will b located in:
 
 ```bash
-/home/tiradani/workspace/cms-python-modules/rpmbuild/SRPMS
+/path/to/convenient-python/rpmbuild/SRPMS
 ```
 
 The built RPMs will be in:
 
 ```bash
-/home/tiradani/workspace/cms-python-modules/rpmbuild/RPMS
+/path/to/convenient-python/rpmbuild/RPMS
 ```

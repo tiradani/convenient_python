@@ -2,7 +2,7 @@
 
 export BUILD_HOME=`pwd`
 
-rpm_list="cms_argument_handler cms_ini_handler cms_logging cms_os_utils python_fstab"
+rpm_list="cp_arg_handler cp_ini_handler cp_logging cp_os_utils python_fstab"
 mock_targets="epel-6-x86_64 epel-5-x86_64"
 
 function setup_rpmbuild
