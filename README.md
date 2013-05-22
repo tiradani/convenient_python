@@ -1,5 +1,7 @@
 # Python Packages
 
+I found that I keep looking up code for the same tasks over and over.  I decided to simplify my life and create
+convenience packages for all the code that I re-use and re-lookup continually.
 
 ## cp_arg_handler
 Provides a helper module for parsing command line options and arguments.
