@@ -2,8 +2,7 @@
 
 export BUILD_HOME=`pwd`
 
-rpm_list="cp_arg_handler cp_ini_handler cp_logging cp_os_utils python_fstab"
-mock_targets="epel-6-x86_64 epel-5-x86_64"
+mock_targets="epel-6-x86_64 epel-5-x86_64 fedora-18-x86_64"
 
 function setup_rpmbuild
 {
@@ -33,12 +32,11 @@ function setup_rmpmmacros
 function build_source_tarball
 {
     # Build the source tar for rpm_build
-    for list_item in $rpm_list
-    do
-        tar -czvf ${list_item}.tar.gz ${list_item}/
-        mv $BUILD_HOME/${list_item}.tar.gz $RPM_TOPDIR/SOURCES
-    done
-    
+    tar -czvf convenient_python.tar.gz --exclude='build.sh' \
+        --exclude='convenient_python.spec' --exclude='README.md' \
+        --exclude='rpmmacros' ../
+
+    mv $BUILD_HOME/convenient_python.tar.gz $RPM_TOPDIR/SOURCES
 }
 
 function setup_spec_files
@@ -63,10 +61,10 @@ function build_rpms
         for mock_target in $mock_targets
         do
             echo "....building $RPM_TOPDIR/SRPMS/$srpm for target -> $mock_target"
-            mock -r $mock_target rebuild $RPM_TOPDIR/SRPMS/$srpm
+            mock --no-clean -r $mock_target rebuild $RPM_TOPDIR/SRPMS/$srpm > mock_output 2>&1
             result=$?
             if [ $result -eq 0 ]; then
-                mv /var/lib/mock/${mock_target}/result/*.rpm $RPM_TOPDIR/RPMS
+                echo "....RPM directory: /var/lib/mock/${mock_target}/result/"
             else
                 echo "....BUILD ERROR"
             fi
@@ -111,5 +109,3 @@ function main
 }
 
 main
-
-

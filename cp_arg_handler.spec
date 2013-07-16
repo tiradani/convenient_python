@@ -17,7 +17,7 @@ BuildRequires:  python2-devel
 
 Provides:       cp_arg_handler = %{version}-%{release}
 
-Source:         cp_arg_handler.tar.gz
+Source:         arg_handler.tar.gz
 
 
 %description
@@ -25,13 +25,13 @@ Provides a helper module for parsing command line options and arguments.
 
 
 %prep
-%setup -q -n cp_arg_handler
+%setup -q -n arg_handler
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{python_sitelib}
-cp -r ../cp_arg_handler $RPM_BUILD_ROOT%{python_sitelib}
+cp -r ../arg_handler $RPM_BUILD_ROOT%{python_sitelib}
 
 
 %files

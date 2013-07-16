@@ -92,7 +92,7 @@ syslog_options = {"LOG_PID": syslog.LOG_PID,
                   "LOG_NOWAIT": syslog.LOG_NOWAIT,
                   "LOG_PERROR": syslog.LOG_PERROR}
 
-class CMSLogError(Exception): pass
+class LogError(Exception): pass
 
 class SysLog(object):
     def __init__(self, option=syslog_options["LOG_PID"], 
@@ -371,9 +371,9 @@ class Log(object):
 
         elif log_type.upper() == "FILE":
             if not os.path.isdir(log_dir):
-                raise CMSLogError("No such log directory: %s" % str(log_dir))
+                raise LogError("No such log directory: %s" % str(log_dir))
             if not log_name:
-                raise CMSLogError("Invalid log name: %s" % str(log_name))
+                raise LogError("Invalid log name: %s" % str(log_name))
 
             add_processlog_handler(log_name, log_dir, message_types,
                        max_days, min_days, max_mbytes, colorize=colorize)

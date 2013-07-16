@@ -9,8 +9,8 @@ import stat
 import time
 import glob
 
-class CMSFileOperationError(Exception): pass
-class CMSUidGidError(Exception): pass
+class FileOperationError(Exception): pass
+class UidGidError(Exception): pass
 
 def drop_privileges(username):
     """
@@ -44,7 +44,7 @@ def mkdir_p(path):
     @type path: C{str}
     @param path: directories specified by path to be created
 
-    @raise CMSFileOperationError: Any OS error that occurs during ownersip change
+    @raise FileOperationError: Any OS error that occurs during ownersip change
     """
     try:
         os.makedirs(path)
@@ -53,7 +53,7 @@ def mkdir_p(path):
             pass
         else:
             error_message = "Error creating path (%s):\n%s" % (path, str(ose))
-            raise CMSFileOperationError(error_message)
+            raise FileOperationError(error_message)
 
 def chmod(mode, path, recurse=False):
     """
@@ -69,7 +69,7 @@ def chmod(mode, path, recurse=False):
     @param recurse: Recurse through all files and sub directories if path is a
     directory and this variable == True.
 
-    @raise CMSFileOperationError: Any OS error that occurs during ownersip change
+    @raise FileOperationError: Any OS error that occurs during ownersip change
     """
     try:
         if recurse:
@@ -90,7 +90,7 @@ def chmod(mode, path, recurse=False):
             error_message = "Permission denied:\n %s" % exc_value
         else:
             error_message = "unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def chown(uid, gid, path, recurse=False):
     """
@@ -109,7 +109,7 @@ def chown(uid, gid, path, recurse=False):
     @param recurse: Recurse through all files and sub directories if path is a
     directory and this variable == True.
 
-    @raise CMSFileOperationError: Any OS error that occurs during ownersip change
+    @raise FileOperationError: Any OS error that occurs during ownersip change
     """
     try:
         if recurse:
@@ -122,7 +122,7 @@ def chown(uid, gid, path, recurse=False):
             else:
                 error_message = "Recurse has been specified and Path (%s) is " \
                                 "not a directory."
-                raise CMSFileOperationError(error_message)
+                raise FileOperationError(error_message)
         else:
             os.chown(path, uid, gid)
     except OSError, ose:
@@ -135,7 +135,7 @@ def chown(uid, gid, path, recurse=False):
             error_message = "Permission denied:\n%s" % exc_value
         else:
             error_message = "unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def get_host():
     """
@@ -162,7 +162,7 @@ def cd(path):
     @param recurse: if true, the function will delete all files and  
     sub-directories as well
 
-    @raise CMSFileOperationError: Any OS error that occurs during directory change
+    @raise FileOperationError: Any OS error that occurs during directory change
     """
     try:
         os.chdir(path)
@@ -178,7 +178,7 @@ def cd(path):
             error_message += "Permission denied:\n%s" % exc_value
         else:
             error_message += "Unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def rm(path, recurse=False):
     """
@@ -191,7 +191,7 @@ def rm(path, recurse=False):
     @param recurse: if true, the function will delete all files and  
     sub-directories as well
 
-    @raise CMSFileOperationError: Any OS error that occurs during path removal
+    @raise FileOperationError: Any OS error that occurs during path removal
     """
     if os.path.isdir(path):
         try:
@@ -202,7 +202,7 @@ def rm(path, recurse=False):
         except shutil.Error:
             _, exc_value, _ = sys.exc_info()
             error_message = "Error removing %s:\n%s" % (path, exc_value)
-            raise CMSFileOperationError(error_message)
+            raise FileOperationError(error_message)
         except OSError, ose:
             _, exc_value, _ = sys.exc_info()
             error_message = "Failed to remove %s.\n\n" % path
@@ -215,7 +215,7 @@ def rm(path, recurse=False):
                 error_message += "Permission denied:\n%s" % exc_value
             else:
                 error_message += "Unknown error occurred:\n%s" % exc_value
-            raise CMSFileOperationError(error_message)
+            raise FileOperationError(error_message)
     elif os.path.isfile(path) or os.path.islink(path):
         try:
             os.remove(path)
@@ -231,10 +231,10 @@ def rm(path, recurse=False):
                 error_message += "Permission denied:\n%s" % exc_value
             else:
                 error_message += "Unknown error occurred:\n%s" % exc_value
-            raise CMSFileOperationError(error_message)
+            raise FileOperationError(error_message)
     else:
         error_message = "Failed to remove %s. No such file or directory." % path
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def cp(source, destination):
     """
@@ -246,14 +246,14 @@ def cp(source, destination):
     @type dest_path: C{str}
     @param dest_path: Destination path that the source will be copied to.
 
-    @raise CMSFileOperationError: Any OS error that occurs during copy
+    @raise FileOperationError: Any OS error that occurs during copy
     """
     try:
         sources = glob.glob(source)
         try:
             os.path.exists(sources[0])
         except IndexError:
-            raise CMSFileOperationError("No file matching %s" % str(source))
+            raise FileOperationError("No file matching %s" % str(source))
 
         for item in sources:
             shutil.copy2(item, os.path.join(destination, os.path.basename(item)))
@@ -261,7 +261,7 @@ def cp(source, destination):
     except shutil.Error:
         _, exc_value, _ = sys.exc_info()
         error_message = "Error copying %s to %s:\n%s" % (source, destination, exc_value)
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def mv(source, destination, overwrite=False):
     """
@@ -276,18 +276,18 @@ def mv(source, destination, overwrite=False):
     @type overwrite_new: C{bool}
     @param overwrite_new: Whether to overwite the destination or not
 
-    @raise CMSFileOperationError: Any OS error that occurs during path move
+    @raise FileOperationError: Any OS error that occurs during path move
     """
 
     if os.path.exists(destination) and not overwrite:
-        raise CMSFileOperationError("Destination path already exists")
+        raise FileOperationError("Destination path already exists")
 
     try:
         sources = glob.glob(source)
         try:
             os.path.exists(sources[0])
         except IndexError:
-            raise CMSFileOperationError("No file matching %s" % str(source))
+            raise FileOperationError("No file matching %s" % str(source))
 
         for item in sources:
             shutil.move(item, os.path.join(destination, os.path.basename(item)))
@@ -296,7 +296,7 @@ def mv(source, destination, overwrite=False):
         _, exc_value, _ = sys.exc_info()
         error_message = "Error moving %s to %s:\n%s" % (source, destination,
                                                         exc_value)
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 
 def safe_write(path, file_data):
@@ -314,7 +314,7 @@ def safe_write(path, file_data):
     @type file_data: C{str}
     @param file_data: The data to write into the file specified by path
 
-    @raise CMSFileOperationError: Any OS error that occurs during file backup or
+    @raise FileOperationError: Any OS error that occurs during file backup or
     writing to the new file.
     """
 
@@ -339,7 +339,7 @@ def safe_write(path, file_data):
             error_message = "Permission denied:\n%s" % exc_value
         else:
             error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def ls(directory):
     """
@@ -354,7 +354,7 @@ def ls(directory):
     @rtype: C{list}
     @param: A list containing the directory listing.
 
-    @raise CMSFileOperationError: Any OS error that occurs during directory 
+    @raise FileOperationError: Any OS error that occurs during directory 
     lookup.
     """
     try:
@@ -369,7 +369,7 @@ def ls(directory):
             error_message = "Permission denied:\n%s" % exc_value
         else:
             error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def ls_files(directory, sort=False, reverse=False, key=str.lower):
     """
@@ -392,7 +392,7 @@ def ls_files(directory, sort=False, reverse=False, key=str.lower):
     @rtype: C{list}
     @param: A list of the files in the directory, optionally sorted.
 
-    @raise CMSFileOperationError: Any OS error that occurs directory lookup.
+    @raise FileOperationError: Any OS error that occurs directory lookup.
     """
 
     try:
@@ -410,7 +410,7 @@ def ls_files(directory, sort=False, reverse=False, key=str.lower):
             error_message = "Permission denied:\n%s" % exc_value
         else:
             error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def getuid(username):
     """
@@ -419,14 +419,14 @@ def getuid(username):
     @type username: C{str}
     @param username: The name for which to search.
 
-    @raise CMSUidGidError: Any error that occurs during user lookup
+    @raise UidGidError: Any error that occurs during user lookup
     """
     try:
         return pwd.getpwnam(username)[2]
     except:
         _, exc_value, _ = sys.exc_info()
         error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSUidGidError(error_message)
+        raise UidGidError(error_message)
 
 def getgid(groupname):
     """
@@ -435,14 +435,14 @@ def getgid(groupname):
     @type groupname: C{str}
     @param groupname: The name for which to search.
 
-    @raise CMSUidGidError: Any error that occurs during group lookup
+    @raise UidGidError: Any error that occurs during group lookup
     """
     try:
         return grp.getgrnam(groupname)[2]
     except:
         _, exc_value, _ = sys.exc_info()
         error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSUidGidError(error_message)
+        raise UidGidError(error_message)
 
 def has_permissions(path, level, perms):
     """
@@ -489,7 +489,7 @@ def touch(path, mode=0600):
     @type mode: C{oct}
     @param mode: Arguments to L{os.access}.
 
-    @raise CMSFileOperationError: Any OS error that occurs
+    @raise FileOperationError: Any OS error that occurs
     """
     try:
         os.fdopen(os.open(path, os.O_WRONLY | os.O_CREAT, mode), 'w').close()
@@ -501,7 +501,7 @@ def touch(path, mode=0600):
             error_message = "Permission denied:\n%s" % exc_value
         else:
             error_message = "Unknown error occurred:\n%s" % exc_value
-        raise CMSFileOperationError(error_message)
+        raise FileOperationError(error_message)
 
 def which(name, flags=os.X_OK):
     """

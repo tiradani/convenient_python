@@ -3,13 +3,13 @@
 I found that I keep looking up code for the same tasks over and over.  I decided to simplify my life and create
 convenience packages for all the code that I re-use and re-lookup continually.
 
-## cp_arg_handler
+## arg_handler
 Provides a helper module for parsing command line options and arguments.
 
-## cp_ini_handler
+## ini_handler
 Provides a helper module for ini files.  It wraps the reading and retrieving of values from ini files into a single class.
 
-## cp_logging
+## logging
 Provides a helper module for logging.  There is a single unified class that sets up logging.  The class can be multiple times.  Each instance can set up one of the following types of logs:
 
 CONSOLE:
@@ -21,13 +21,19 @@ FILE:
 SYSLOG:
 : logs output to syslog
 
-## cp_os_utils
+## os_utils
 Provides python implementations of many shell commands.
+
+## py_utils
+Provides useful utility functions for python programming tasks.
 
 ## python_fstab
 Provides python-fstab module for reading and editing fstab files in python.  The package was apparently written for and subsequently removed from Ubuntu/Debian.  The source has been modified to include more properties.  The original source for this package can be found at:
 
 <https://github.com/ProteinSimple/python-fstab>
+
+## xml
+Provides a common interface for parsing xml and performing xsl transforms in python
 
 # Building RPMs with Mock
 
@@ -47,7 +53,7 @@ yum install mock
 Execute the following:
 
 ```bash
-cd <path/to>/cms-python-modules
+cd <path/to>/convenient_python
 ./build.sh
 ```
 
