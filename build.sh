@@ -32,9 +32,7 @@ function setup_rmpmmacros
 function build_source_tarball
 {
     # Build the source tar for rpm_build
-    tar -czvf convenient_python.tar.gz --exclude='build.sh' \
-        --exclude='convenient_python.spec' --exclude='README.md' \
-        --exclude='rpmmacros' ../
+    tar -czvf convenient_python.tar.gz convenient_python/
 
     mv $BUILD_HOME/convenient_python.tar.gz $RPM_TOPDIR/SOURCES
 }
