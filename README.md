@@ -39,9 +39,9 @@ Original source: <https://code.google.com/p/ipaddr-py/>
 
 ### os_utils.openssh_wrapper
 AUTHORS:
-Roman Imankulov <roman@netangels.ru>
-Jan-Oliver Kaiser <mail@janno-kaiser.de>
-Pavel Vavilin <shtartora@gmail.com>
+* Roman Imankulov <roman@netangels.ru>
+* Jan-Oliver Kaiser <mail@janno-kaiser.de>
+* Pavel Vavilin <shtartora@gmail.com>
 
 cloned from:  <https://github.com/NetAngels/openssh-wrapper.git>
 
