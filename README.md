@@ -29,10 +29,12 @@ Provides python implementations of many shell commands.  This module also includ
 
 ### os_utils.daemonize
 This module is distributed under the MIT license.
+
 Original source: <https://github.com/thesharp/daemonize>
 
 ### os_utils.ipaddr
 This module is licensed under the Apache License, Version 2.0 (the "License")
+
 Original source: <https://code.google.com/p/ipaddr-py/>
 
 ### os_utils.openssh_wrapper
