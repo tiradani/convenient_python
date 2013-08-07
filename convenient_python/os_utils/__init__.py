@@ -8,6 +8,7 @@ import grp  # @UnresolvedImport
 import stat
 import time
 import glob
+import fnmatch
 
 class FileOperationError(Exception): pass
 class UidGidError(Exception): pass
@@ -396,7 +397,7 @@ def ls_files(directory, sort=False, reverse=False, key=str.lower):
     """
 
     try:
-        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        files = [f for f in os.listdir(directory) if os.path.isfile(f)]
         if sort:
             files.sort(key=key, reverse=reverse)
         return files
@@ -528,3 +529,25 @@ def which(name, flags=os.X_OK):
         if os.access(p, flags):
             result.append(p)
     return result
+
+def _is_dir_excluded(directory, exclude_dirs):
+    should_be_excluded = False
+    if isinstance(exclude_dirs, list):
+        for ex_dir in exclude_dirs:
+            if ex_dir in directory:
+                should_be_excluded = True
+                break
+    elif isinstance(exclude_dirs, str):
+        if exclude_dirs in directory:
+            should_be_excluded = True
+
+    return should_be_excluded
+
+def find_files(directory, pattern, exclude_dirs=None):
+    for root, _, files in os.walk(directory):
+        # check to see if any exclude directories passed in match
+        if _is_dir_excluded(root, exclude_dirs): continue
+        for basename in files:
+            if fnmatch.fnmatch(basename, pattern):
+                filename = os.path.join(root, basename)
+                yield filename
