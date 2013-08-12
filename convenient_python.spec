@@ -4,7 +4,7 @@
 %endif
 
 
-Name:           cp_arg_handler
+Name:           convenient_python
 Group:          System Environment/Libraries
 Version:        0
 Release:        1%{?dist}
