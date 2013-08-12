@@ -551,3 +551,9 @@ def find_files(directory, pattern, exclude_dirs=None):
             if fnmatch.fnmatch(basename, pattern):
                 filename = os.path.join(root, basename)
                 yield filename
+
+def read_first_line(file_path):
+    fd = open(file_path, 'r')
+    first_line = fd.readline()
+    fd.close()
+    return first_line
