@@ -443,8 +443,10 @@ def find_files(directory, pattern, exclude_dirs=None):
                 filename = os.path.join(root, basename)
                 yield filename
 
-def read_first_line(file_path):
+def head(file_path, lines=1):
     fd = open(file_path, 'r')
-    first_line = fd.readline()
+    output = []
+    for _ in range(0, lines):
+        output.append(fd.readline())
     fd.close()
-    return first_line
+    return output
