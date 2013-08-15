@@ -32,9 +32,9 @@ function setup_rmpmmacros
 function build_source_tarball
 {
     # Build the source tar for rpm_build
-    tar -czvf convenient_python.tar.gz convenient_python/
+    tar -czvf py_stdlib.tar.gz py_stdlib/
 
-    mv $BUILD_HOME/convenient_python.tar.gz $RPM_TOPDIR/SOURCES
+    mv $BUILD_HOME/py_stdlib.tar.gz $RPM_TOPDIR/SOURCES
 }
 
 function setup_spec_files

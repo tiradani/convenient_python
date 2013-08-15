@@ -4,7 +4,7 @@
 %endif
 
 
-Name:           convenient_python
+Name:           py_stdlib
 Group:          System Environment/Libraries
 Version:        0
 Release:        1%{?dist}
@@ -15,22 +15,22 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python2-devel
 
-Provides:       convenient_python = %{version}-%{release}
+Provides:       py_stdlib = %{version}-%{release}
 
-Source:         convenient_python.tar.gz
+Source:         py_stdlib.tar.gz
 
 
 %description
 Provides the following modules:
 
-convenient_python.arg_handler
+py_stdlib.arg_handler
     Provides a helper module for parsing command line options and arguments.
 
-convenient_python.ini_handler
+py_stdlib.ini_handler
     Provides a helper module for ini files.  It wraps the reading and retrieving
     of values from ini files into a single class.
 
-convenient_python.logging
+py_stdlib.logging
     Provides a helper module for logging.  There is a single unified class that
     sets up logging.  The class can be multiple times.  Each instance can set up
     one of the following types of logs:
@@ -45,13 +45,13 @@ convenient_python.logging
         SYSLOG:
             logs output to syslog
 
-convenient_python.os_utils
+py_stdlib.os_utils
     Provides python implementations of many shell commands.
 
-convenient_python.py_utils
+py_stdlib.py_utils
     Provides useful utility functions for python programming tasks.
 
-convenient_python.python_fstab
+py_stdlib.python_fstab
     Provides python-fstab module for reading and editing fstab files in python.
     The package was apparently written for and subsequently removed from 
     Ubuntu/Debian.  The source has been modified to include more properties.  
@@ -59,22 +59,22 @@ convenient_python.python_fstab
 
         <https://github.com/ProteinSimple/python-fstab>
 
-convenient_python.xml
+py_stdlib.xml
     Provides a common interface for parsing xml and performing xsl transforms 
     in python
 
 
 %prep
-%setup -q -n convenient_python
+%setup -q -n py_stdlib
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{python_sitelib}
-cp -r ../convenient_python $RPM_BUILD_ROOT%{python_sitelib}
+cp -r ../py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 
 %files
-%{python_sitelib}/convenient_python/
+%{python_sitelib}/py_stdlib/
 
 %changelog
 * Mon May 10 2013 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.1

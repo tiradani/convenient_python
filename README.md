@@ -78,7 +78,7 @@ yum install mock
 Execute the following:
 
 ```bash
-cd <path/to>/convenient_python
+cd <path/to>/py_stdlib
 ./build.sh
 ```
 
