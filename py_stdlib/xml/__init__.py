@@ -3,7 +3,7 @@ import libxslt
 import os
 import urllib2
 
-from convenient_python.os_utils import has_permissions
+from py_stdlib.os_utils import has_permissions
 
 class XMLError(Exception): pass
 
