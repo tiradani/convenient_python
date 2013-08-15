@@ -195,13 +195,16 @@ class TimedSizeHandler(TimedRotatingFileHandler):
         @type record: string
         @param record: The message that will be logged.
         """
-        do_timed_rollover = logging.handlers.TimedRotatingFileHandler.shouldRollover(self, record)
-        min_day_time = self.rolloverAt - self.interval + int(time.time())
+        do_timed_rollover = 0
+        t = int(time.time())
+        if t >= self.rolloverAt:
+            do_timed_rollover = 1
+
         do_size_rollover = 0
         if self.maxBytes > 0:                   # are we rolling over?
             msg = "%s\n" % self.format(record)
             self.stream.seek(0, 2)  #due to non-posix-compliant Windows feature
-            if (self.stream.tell() + len(msg) >= self.maxBytes) and (min_day_time > self.minDays):
+            if (self.stream.tell() + len(msg) >= self.maxBytes):
                 do_size_rollover = 1
 
         return do_timed_rollover or do_size_rollover
