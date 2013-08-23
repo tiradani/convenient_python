@@ -13,7 +13,7 @@ class FileDoesNotExist(Exception):
         # Call the base class constructor with the parameters it needs
         Exception.__init__(self, message)
 
-class GlideinTar:
+class Tar:
     """This class provides a container for creating tarballs.  The class provides
     methods to add files and string data (ends up as a file in the tarball).
     The tarball can be written to a file on disk or written to memory.
