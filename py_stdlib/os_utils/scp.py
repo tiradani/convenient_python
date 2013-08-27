@@ -6,9 +6,12 @@ from openssh_wrapper import SSHError
 class SCPError(Exception): pass
 
 class Scp(object):
-    def __init__(self, hostname, port, username, ssh_key=None):
+    def __init__(self, hostname, port=None, username=None, ssh_key=None):
         self.host = hostname
-        self.port = port
+
+        self.port = 22
+        if port: self.port = port
+
         self.user = username
         self.ssh_key = ssh_key
 
