@@ -71,7 +71,7 @@ py_stdlib.xml
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{python_sitelib}
-cp -r ../py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
+cp -r py_stdlib/py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 
 %files
 %{python_sitelib}/py_stdlib/
