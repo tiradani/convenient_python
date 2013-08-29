@@ -17,7 +17,7 @@ BuildRequires:  python2-devel
 
 Provides:       py_stdlib = %{version}-%{release}
 
-Source:         py_stdlib.tar.gz
+Source:         py_stdlib-%{version}.tar.gz
 
 
 %description
@@ -65,7 +65,7 @@ py_stdlib.xml
 
 
 %prep
-%setup -q -n py_stdlib
+%setup -q -n py_stdlib-%{version}
 
 %install
 rm -rf $RPM_BUILD_ROOT
