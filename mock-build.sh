@@ -2,7 +2,11 @@
 
 mock_targets="epel-6-x86_64 epel-5-x86_64 fedora-18-x86_64"
 current_directory=`pwd`
-git_repo_path=`cd "$1"; pwd`
+
+# if the repo path is not supplied, we will assume that this script has been included in the repo, 
+# that it is being executed from the repository path
+given_path=${1:-$current_directory}
+git_repo_path=`cd "${given_path}"; pwd`
 branch=${2:-master}
 
 echo "Welcome to mock-build.sh"
