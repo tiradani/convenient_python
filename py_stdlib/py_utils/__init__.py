@@ -1,5 +1,12 @@
-import os
 import cPickle
+import os
+import random
+import string
+
+
+def create_random_string(length=8):
+    char_set = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(char_set) for _ in range(length))
 
 def chunk_list(orig_list, chunk_size):
     """
