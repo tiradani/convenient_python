@@ -46,14 +46,12 @@ class Ini(object):
 
     def getBoolean(self, section, option, default=True):
         """
-        Helper function for ConfigParser objects which allows setting the default.
-    
-        If the cp object has a section/option of the proper name, and if that value
-        has a 'y' or 't', we assume it's supposed to be true.  Otherwise, if it
-        contains a 'n' or 'f', we assume it's supposed to be true.
-        
-        If neither applies - or the option doesn't exist, return the default
-    
+        Helper function for ConfigParser objects which allows converts values to
+        Booleans.  The default value is returned if the value is not one of the 
+        following:
+            Valid "True" values:  ['true', '1', 't', 'y', 'yes']
+            Valid "False" values: ['false', '0', 'f', 'n', 'no']
+
         @param section: Section of config parser to read
         @param option: Option in section to retrieve
         @param default: Default value if the section/option is not present.
@@ -61,8 +59,37 @@ class Ini(object):
             present.
         """
         val = str(self.get(section, option, default)).lower()
-        if val.find('t') >= 0 or val.find('y') >= 0 or val.find('1') >= 0:
-            return True
-        if val.find('f') >= 0 or val.find('n') >= 0 or val.find('0') >= 0:
-            return False
+        if val in ['true', '1', 't', 'y', 'yes']: return True
+        if val in ['false', '0', 'f', 'n', 'no']: return False
         return default
+
+    def getlist(self, section, option):
+        """
+        Helper function for ConfigParser objects which allows converts values to
+        a list.  For example the following ini file defines a '\n' delimited 
+        string that can be converted to a list via the splitlines function.
+        ;test.ini
+        [hello]
+        barlist = 
+            item1
+            item2
+
+        The value of config.get('hello','barlist') will be: "\nitem1\nitem2"
+
+        @param section: Section of config parser to read
+        @param option: Option in section to retrieve
+        @returns: List built from value stored in CP for section/option.
+        """
+        value = self.cp.get(section, option)
+        return list(filter(None, (x.strip() for x in value.splitlines())))
+
+    def getlistint(self, section, option):
+        """
+        Helper function for ConfigParser objects which allows converts values to
+        a list of integers.
+
+        @param section: Section of config parser to read
+        @param option: Option in section to retrieve
+        @returns: List of integers built from value stored in CP for section/option.
+        """
+        return [int(x) for x in self.getlist(section, option)]
