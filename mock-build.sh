@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mock_targets="epel-6-x86_64 epel-5-x86_64 fedora-18-x86_64"
+mock_targets="epel-6-x86_64 epel-5-x86_64 fedora-20-x86_64"
 current_directory=`pwd`
 
 # if the repo path is not supplied, we will assume that this script has been included in the repo, 
