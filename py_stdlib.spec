@@ -7,7 +7,7 @@
 Name:           py_stdlib
 Group:          System Environment/Libraries
 Version:        0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Provides many helper modules for common uses cases when programming with Python (2.6+)
 
 License:        Fermitools Software Legal Information (Modified BSD License)
@@ -77,6 +77,10 @@ cp -r py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 %{python_sitelib}/py_stdlib/
 
 %changelog
+* Fri Mar 14 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.2
+- fixed a syslog bug
+- added timed command
+
 * Mon May 10 2013 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.1
 - initial packaging
 
