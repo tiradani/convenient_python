@@ -95,23 +95,24 @@ syslog_options = {"LOG_PID": syslog.LOG_PID,
 class LogError(Exception): pass
 
 class SysLog(object):
-    def __init__(self, option=syslog_options["LOG_PID"], 
+    def __init__(self, ident='syslog', option=syslog_options["LOG_PID"], 
                  facility=syslog_facilities["USER"],
                  timestamp_format='%b %e %H:%M:%S'):
 
-        self.open_log(option, facility)
+        self.open_log(ident, option, facility)
         self.timestamp_format = timestamp_format
 
     def set_timestamp_format(self, ts_format):
         self.timestamp_format = ts_format
 
-    def open_log(self, option=syslog.LOG_PID, facility=syslog.LOG_USER):
-        syslog.openlog(logoption=option, facility=facility)
+    def open_log(self, ident='syslog', option=syslog.LOG_PID, facility=syslog.LOG_USER):
+        syslog.openlog(ident, option, facility)
 
     def log(self, priority, message):
-        timestamp = datetime.datetime.now().strftime(self.timestamp_format)
-        formatted_message = "%s: %s" % (timestamp, message)
-        syslog.syslog(priority, formatted_message)
+        #timestamp = datetime.datetime.now().strftime(self.timestamp_format)
+        #formatted_message = "%s: %s" % (timestamp, message)
+        #syslog.syslog(priority, formatted_message)
+        syslog.syslog(priority, message)
 
     def info(self, message):
         self.log(syslog.LOG_INFO, message)
@@ -369,7 +370,7 @@ class Log(object):
 
         self.log_type = log_type
         if log_type.upper() == "SYSLOG":
-            self.logger = SysLog(option=option, facility=facility,
+            self.logger = SysLog(ident=log_name, option=option, facility=facility,
                                  timestamp_format=timestamp_format)
 
         elif log_type.upper() == "FILE":
