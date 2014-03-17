@@ -370,6 +370,8 @@ class Log(object):
 
         self.log_type = log_type
         if log_type.upper() == "SYSLOG":
+            if not log_name:
+                raise LogError("Invalid log name: %s" % str(log_name))
             self.logger = SysLog(ident=log_name, option=option, facility=facility,
                                  timestamp_format=timestamp_format)
 
