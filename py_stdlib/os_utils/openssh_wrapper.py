@@ -259,7 +259,7 @@ class SSHConnection(object):
         if mode or owner:
             targets = self.get_scp_targets(filenames, target)
             if mode:
-                cmd_chunks = ['chmod', mode] + targets
+                cmd_chunks = ['chmod', str(mode)] + targets
                 cmd = b_quote(cmd_chunks)
                 result = self.run(cmd)
                 if result.returncode:
@@ -378,7 +378,7 @@ class SSHConnection(object):
         if self.identity_file:
             cmd += ['-i', self.identity_file]
         if self.port:
-            cmd += ['-P', self.port]
+            cmd += ['-P', str(self.port)]
 
         if isinstance(files, (text, bytes)):
             raise ValueError('"files" argument have to be iterable (list or tuple)')
