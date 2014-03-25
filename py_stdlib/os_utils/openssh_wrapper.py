@@ -24,7 +24,7 @@ import subprocess
 
 __all__ = 'SSHConnection SSHResult SSHError b u b_list u_list'.split()
 
-if sys.version[0] == 2:
+if int(sys.version[0]) == 2:
     text = unicode
     bytes = str  # @ReservedAssignment
 else:  # PY3K
