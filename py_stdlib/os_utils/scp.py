@@ -3,6 +3,8 @@ import os
 from openssh_wrapper import SSHConnection
 from openssh_wrapper import SSHError
 
+from hash_utils import checksum
+
 class SCPError(Exception): pass
 
 class Scp(object):
@@ -24,11 +26,23 @@ class Scp(object):
             # Check to see if the source exists, raises ERROR_FILE_NOT_FOUND
             self.source_exists(source)
 
+            # get the sha256 checksum of the source file
+            sha256_checksum = checksum(source)
+
             # set up the ssh connection
             conn = SSHConnection(self.host, login=self.user, 
                                  port=self.port, identity_file=self.ssh_key)
 
             # scp the file
             conn.scp((source, ), target=dest_path, mode=mode, owner=self.user)
+
+            # Now get the sha256 checksum of the remote file
+            ret = conn.run("/usr/bin/sha256sum %s" % dest_path)
+            # the shell utility return the checksum + the file path, we only want the checksum
+            remote_checksum = ret.split()[0]
+
+            if sha256_checksum != remote_checksum:
+                raise SSHError("Checksums do not match.")
+
         except SSHError, ssh_e:
             raise SCPError("SCP failed: %s" % str(ssh_e))
