@@ -15,6 +15,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python2-devel
 
+Requires:       python-dateutil
+Requires:       python-colorama
+Requires:       pssh
+Requires:       openssl
+Requires:       libxml2
+Requires:       libxml2-python
+Requires:       PyYAML
+
 Provides:       py_stdlib = %{version}-%{release}
 
 Source:         py_stdlib-%{version}.tar.gz
