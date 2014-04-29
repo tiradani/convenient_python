@@ -7,7 +7,7 @@
 Name:           py_stdlib
 Group:          System Environment/Libraries
 Version:        0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Provides many helper modules for common uses cases when programming with Python (2.6+)
 
 License:        Fermitools Software Legal Information (Modified BSD License)
@@ -97,6 +97,10 @@ cp -r py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 %{python_sitelib}/py_stdlib/
 
 %changelog
+* Tue Apr 29 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.5
+- added missing time units to the X509 module
+- cleaned up the time math logic
+
 * Fri Apr 25 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.4
 - added requires to the spec file
 
