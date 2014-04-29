@@ -10,6 +10,7 @@ from py_stdlib.os_utils import check_output
 from py_stdlib.os_utils import CalledProcessError
 from py_stdlib.os_utils import head
 
+class X509Error(Exception): pass
 
 class _X509(object):
     """
@@ -19,29 +20,32 @@ class _X509(object):
     def __init__(self, path):
         super(_X509, self).__init__()
         self._path = path
-        self._valid_time_units = ['seconds', 'minutes', 'days']
+        self._valid_time_units = ['seconds', 'minutes', 'hours', 'days']
 
     @property
     def path(self):
         return self._path
 
     def _expires_in(self, expiration_timestamp, time_units='seconds'):
+        if not time_units in self._valid_time_units:
+            raise X509Error("Invalid time_units specified.  Valid units are: %s" % self._valid_time_units)
+        
         eol = time.mktime(time.strptime(expiration_timestamp, "%b %d %H:%M:%S %Y GMT"))
         today = time.mktime(datetime.datetime.utcnow().timetuple())
         seconds_until_epiry = eol - today
         
-        if not seconds_until_epiry == 0:
-            if time_units in self._valid_time_units:
-                if time_units == 'seconds':
-                    expires_in = seconds_until_epiry
-                elif time_units == 'minutes':
-                    expires_in = int(math.floor(seconds_until_epiry / 60))
-                elif time_units == 'hours':
-                    expires_in = int(math.floor(seconds_until_epiry / 3600))
-                elif time_units == 'days':
-                    expires_in = int(math.floor(seconds_until_epiry / 86400))
+        if int(math.floor(seconds_until_epiry)) == 0: # round down to the nearest int 
+            expires_in = seconds_until_epiry # if 0, then don't do any math
         else:
-            expires_in = seconds_until_epiry
+            # not 0, so convert to specified units
+            if time_units == 'seconds':
+                expires_in = seconds_until_epiry
+            elif time_units == 'minutes':
+                expires_in = int(math.floor(seconds_until_epiry / 60))
+            elif time_units == 'hours':
+                expires_in = int(math.floor(seconds_until_epiry / 3600))
+            elif time_units == 'days':
+                expires_in = int(math.floor(seconds_until_epiry / 86400))
 
         return expires_in
 
