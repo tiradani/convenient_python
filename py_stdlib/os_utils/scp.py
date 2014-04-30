@@ -37,12 +37,17 @@ class Scp(object):
             conn.scp((source, ), target=dest_path, mode=mode, owner=self.user)
 
             # Now get the sha256 checksum of the remote file
-            ret = conn.run("/usr/bin/sha256sum %s" % dest_path)
-            # the shell utility return the checksum + the file path, we only want the checksum
-            remote_checksum = ret.split()[0]
-
-            if sha256_checksum != remote_checksum:
-                raise SSHError("Checksums do not match.")
+            command = "/usr/bin/sha256sum %s/%s" % (dest_path, os.path.basename(source))
+            ret = conn.run(command)
+            try:
+                # the shell utility return the checksum + the file path, we only want the checksum
+                remote_checksum = ret.stdout.split()[0]
+                if sha256_checksum != remote_checksum:
+                    raise SSHError("Checksums do not match.")
+            except IndexError:
+                raise SSHError("SCP failed:\n  Command: %s\n  stdout: %s\n  stderr: %s" % \
+                               (command, ret.stdout, ret.stderr))
 
         except SSHError, ssh_e:
             raise SCPError("SCP failed: %s" % str(ssh_e))
+
