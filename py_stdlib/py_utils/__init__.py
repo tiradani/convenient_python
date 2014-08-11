@@ -3,6 +3,8 @@ import os
 import random
 import string
 
+def str_to_bool(input_str):
+    return str(input_str).lower() in ['true', 't', 'yes', 'y', '1']
 
 def create_random_string(length=8):
     char_set = string.ascii_uppercase + string.digits
