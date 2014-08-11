@@ -7,7 +7,7 @@
 Name:           py_stdlib
 Group:          System Environment/Libraries
 Version:        0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Provides many helper modules for common uses cases when programming with Python (2.6+)
 
 License:        Fermitools Software Legal Information (Modified BSD License)
@@ -97,6 +97,11 @@ cp -r py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 %{python_sitelib}/py_stdlib/
 
 %changelog
+* Mon Aug 11 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.7
+- fixed a bug in the scp module, added check to determine if the filename
+  is included in the destination path before performing the checksum
+- added string to boolean function
+
 * Thu May 1 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.6
 - fixed a bug in the scp module
 
