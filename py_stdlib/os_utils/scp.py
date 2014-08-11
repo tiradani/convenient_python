@@ -37,7 +37,18 @@ class Scp(object):
             conn.scp((source, ), target=dest_path, mode=mode, owner=self.user)
 
             # Now get the sha256 checksum of the remote file
-            command = "/usr/bin/sha256sum %s/%s" % (dest_path, os.path.basename(source))
+            checksum_path = dest_path
+            command = "if [ -d \"%s\" ]; then echo 'ISDIR'; else echo 'ISFILE'; fi" % dest_path
+            ret = conn.run(command)
+            try:
+                is_dir = ret.stdout.split()[0]
+                if is_dir.lower() == 'isdir':
+                    checksum_path = "%s/%s" % (dest_path, os.path.basename(source))
+            except IndexError:
+                raise SSHError("SCP failed:\n  Command: %s\n  stdout: %s\n  stderr: %s" % \
+                               (command, ret.stdout, ret.stderr))
+
+            command = "/usr/bin/sha256sum %s" % checksum_path
             ret = conn.run(command)
             try:
                 # the shell utility return the checksum + the file path, we only want the checksum
