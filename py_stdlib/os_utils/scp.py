@@ -21,7 +21,7 @@ class Scp(object):
         if not os.path.exists(source):
             raise IOError("Source file not found (%s)" % source)
 
-    def scp(self, source, dest_path, mode, erase_owner=False, do_checksum=True):
+    def scp(self, source, dest_path, mode, erase_owner=False, do_checksum=True, configfile=None):
         try:
             # Check to see if the source exists, raises ERROR_FILE_NOT_FOUND
             self.source_exists(source)
@@ -30,8 +30,8 @@ class Scp(object):
             sha256_checksum = checksum(source)
 
             # set up the ssh connection
-            conn = SSHConnection(self.host, login=self.user, 
-                                 port=self.port, identity_file=self.ssh_key)
+            conn = SSHConnection(self.host, login=self.user, port=self.port, configfile=configfile,
+                                 identity_file=self.ssh_key)
 
             # scp the file
             if erase_owner:
