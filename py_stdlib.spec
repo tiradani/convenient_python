@@ -7,7 +7,7 @@
 Name:           py_stdlib
 Group:          System Environment/Libraries
 Version:        0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Provides many helper modules for common uses cases when programming with Python (2.6+)
 
 License:        Fermitools Software Legal Information (Modified BSD License)
@@ -97,6 +97,9 @@ cp -r py_stdlib $RPM_BUILD_ROOT%{python_sitelib}
 %{python_sitelib}/py_stdlib/
 
 %changelog
+* Thu Aug 21 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.9
+- add the option to pass in a config file
+
 * Tue Aug 19 2014 Anthony Tiradani <anthony.tiradani@gmail.com> - 0.8
 - added capability to disable checksum call in scp
 - added capability to remove owner in scp command
